@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
 # Setting the user name and password
-USER = "1095287"
-PASS = "h110622"
+USER = ""
+PASS = ""
 
 # Start a settion
 session = requests.session()
