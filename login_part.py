@@ -1,4 +1,3 @@
-from os import times
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
@@ -6,30 +5,27 @@ from urllib.parse import urljoin
 user = "1095287"
 pw = "h110622"
 
+target = "https://navi.mars.kanazawa-it.ac.jp/portal/student"
+
 #start the session
 session = requests.session()
-response = session.get(urljoin)
+response = session.get(target)
+soup = BeautifulSoup(response.content, 'html.parser')
+token = soup.find('input',{'name':'_csrf'}).get('value')
 
-url_login= "https://navi.mars.kanazawa-it.ac.jp/portal/student"
-
-bs = BeautifulSoup(response.text, 'html.parser')
-
-# Loggin
-login_info = {
+# loggin
+login_in = {
     "uid":user,
     "pw":pw,
-    "_csrf":"f28e34c1-6ad6-462c-b518-86cf4c23d298",
+    "StudentLoginBtn": token,
+    "password" : ""
 }
 
+#launch
+response = session.post(target ,data=login_in)
+soup = BeautifulSoup(response.content, 'html.parser')
 
-#tokenの取得
-_csrf = bs.find(attrs={'name':'_csrf'}).get('value')
+print(soup)
 
 
-#取得したtokenをpostするパラメーターに追加
 
-login_info['_csrf'] = _csrf
-
-login_info = session.post(url_login, data=login_info)
-times.sleep(2)
-print(login_info.text)
